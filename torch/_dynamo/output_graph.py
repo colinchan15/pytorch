@@ -34,6 +34,7 @@ import sys
 import traceback
 import weakref
 from dataclasses import dataclass, field as dc_field
+from colletions.abc import Sequence
 from typing import Any, Callable, cast, Optional, TYPE_CHECKING, Union
 
 import sympy
@@ -45,6 +46,7 @@ import torch.nn
 import torch.utils._pytree as pytree
 from torch import fx, Tensor
 from torch._C._dynamo import guards
+from torch.export.dynamic_shapes import _ConstraintTarget
 from torch._dynamo.exc import ShortenTraceback, TensorifyScalarRestartAnalysis
 from torch._guards import (
     CompileContext,
@@ -384,7 +386,7 @@ class OutputGraph(OutputGraphGuardsState):
         compiler_fn: Optional[CompilerFn],
         root_tx,
         export: bool,
-        export_constraints,
+        export_constraints: Sequence[_ConstraintTarget],
         frame_state,
         local_scope: Scope,
         global_scope: Scope,
